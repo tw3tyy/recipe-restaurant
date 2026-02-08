@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Recipe</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="glass">
+  <div class="logo">Asian<span>Food</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="recipes.html">Recipes</a></li>
+    <li><a href="create.html" class="btn btn-outline">＋ Create</a></li>
+    <li><a href="#" id="logout" class="btn btn-outline">Logout</a></li>
+  </ul>
+</nav>
+
+<section>
+  <div class="section-wrapper">
+    <h2>Create Recipe</h2>
+
+    <form id="recipe-form" class="glass recipe-form">
+      <div class="form-group">
+        <input type="text" id="title" placeholder="Title" required />
+      </div>
+
+      <div class="form-group">
+        <textarea id="description" placeholder="Description" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          id="ingredients"
+          placeholder="Ingredients (comma separated)"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <textarea
+          id="instructions"
+          placeholder="Instructions"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <select id="cuisineType" required>
+          <option value="">Select cuisine</option>
+          <option>Chinese</option>
+          <option>Japanese</option>
+          <option>Korean</option>
+          <option>Thai</option>
+          <option>Vietnamese</option>
+          <option>Indian</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Recipe</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const token = localStorage.getItem('token');
+  if (!token) {
+    location.href = '/auth.html';
+  }
+
+  document.getElementById('logout').onclick = () => {
+    localStorage.removeItem('token');
+    location.href = '/';
+  };
+
+  document.getElementById('recipe-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const body = {
+      title: title.value,
+      description: description.value,
+      ingredients: ingredients.value.split(',').map(i => i.trim()),
+      instructions: instructions.value,
+      cuisineType: cuisineType.value
+    };
+
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (res.ok) {
+      location.href = '/recipes.html';
+    } else {
+      const err = await res.json();
+      alert(err.message || 'Error creating recipe');
+    }
+  });
+</script>
+
+</body>
+</html>

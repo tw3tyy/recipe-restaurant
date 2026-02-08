@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipes</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="glass">
+  <div class="logo">Asian<span>Food</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="create.html" class="btn btn-outline">＋ Create</a></li>
+    <li><a href="#" id="logout" class="btn btn-outline">Logout</a></li>
+  </ul>
+</nav>
+
+<section>
+  <div class="section-wrapper">
+    <h2>Recipes</h2>
+    <div class="recipe-grid" id="recipe-list"></div>
+  </div>
+</section>
+
+<!-- EDIT MODAL -->
+<div id="edit-modal" class="modal hidden">
+  <div class="modal-content glass">
+    <h3>Edit Recipe</h3>
+
+    <input id="edit-title" placeholder="Title" />
+    <textarea id="edit-description" placeholder="Description"></textarea>
+    <input id="edit-ingredients" placeholder="Ingredients (comma separated)" />
+    <textarea id="edit-instructions" placeholder="Instructions"></textarea>
+
+    <select id="edit-cuisine">
+      <option>Chinese</option>
+      <option>Japanese</option>
+      <option>Korean</option>
+      <option>Thai</option>
+      <option>Vietnamese</option>
+      <option>Indian</option>
+      <option>Other</option>
+    </select>
+
+    <div class="modal-actions">
+      <button id="save-edit" class="btn btn-primary">Save</button>
+      <button id="cancel-edit" class="btn btn-outline">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+    const token = localStorage.getItem('token');
+    if (!token) location.href = '/auth.html';
+  
+    const recipeList = document.getElementById('recipe-list');
+    const modal = document.getElementById('edit-modal');
+  
+    const editTitle = document.getElementById('edit-title');
+    const editDescription = document.getElementById('edit-description');
+    const editIngredients = document.getElementById('edit-ingredients');
+    const editInstructions = document.getElementById('edit-instructions');
+    const editCuisine = document.getElementById('edit-cuisine');
+  
+    const saveEditBtn = document.getElementById('save-edit');
+    const cancelEditBtn = document.getElementById('cancel-edit');
+    const logoutBtn = document.getElementById('logout');
+  
+    let editingId = null;
+  
+    logoutBtn.onclick = () => {
+      localStorage.removeItem('token');
+      location.href = '/';
+    };
+  
+    async function loadRecipes() {
+      const res = await fetch('/api/recipes');
+      const recipes = await res.json();
+  
+      recipeList.innerHTML = '';
+  
+      recipes.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'recipe-card glass';
+  
+        card.innerHTML = `
+          <h3>${r.title}</h3>
+          <p>${r.description}</p>
+          <small>By: ${r.author?.username || 'Unknown'}</small>
+  
+          <div class="card-actions">
+            <button class="btn btn-outline edit-btn">Edit</button>
+            <button class="btn btn-outline delete-btn">Delete</button>
+          </div>
+        `;
+  
+        card.querySelector('.delete-btn').onclick = async () => {
+          if (!confirm('Delete this recipe?')) return;
+  
+          const res = await fetch('/api/recipes/' + r._id, {
+            method: 'DELETE',
+            headers: {
+              Authorization: 'Bearer ' + token
+            }
+          });
+  
+          if (res.ok) {
+            loadRecipes();
+          } else {
+            alert('Not authorized');
+          }
+        };
+  
+        card.querySelector('.edit-btn').onclick = () => {
+          editingId = r._id;
+          modal.classList.remove('hidden');
+  
+          editTitle.value = r.title;
+          editDescription.value = r.description;
+          editIngredients.value = r.ingredients.join(', ');
+          editInstructions.value = r.instructions;
+          editCuisine.value = r.cuisineType;
+        };
+  
+        recipeList.appendChild(card);
+      });
+    }
+  
+    cancelEditBtn.onclick = () => {
+      modal.classList.add('hidden');
+      editingId = null;
+    };
+  
+    saveEditBtn.onclick = async () => {
+      const body = {
+        title: editTitle.value,
+        description: editDescription.value,
+        ingredients: editIngredients.value.split(',').map(i => i.trim()),
+        instructions: editInstructions.value,
+        cuisineType: editCuisine.value
+      };
+  
+      const res = await fetch('/api/recipes/' + editingId, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        },
+        body: JSON.stringify(body)
+      });
+  
+      if (res.ok) {
+        modal.classList.add('hidden');
+        loadRecipes();
+      } else {
+        alert('Update failed');
+      }
+    };
+  
+    loadRecipes();
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asian Food Explorer</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="glass">
+  <div class="logo">Asian<span>Food</span></div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="recipes.html">Recipes</a></li>
+    <li id="auth-link">
+      <a href="auth.html" class="btn btn-primary">Login</a>
+    </li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <h1>Asian Cuisine Explorer</h1>
+  <p>Discover and share authentic Asian recipes.</p>
+  <a href="recipes.html" class="btn btn-primary">Get Started</a>
+</header>
+
+<script>
+  const token = localStorage.getItem('token');
+  const authLink = document.getElementById('auth-link');
+
+  if (token) {
+    authLink.innerHTML = '<a href="#" class="btn btn-outline" id="logout">Logout</a>';
+  }
+
+  document.addEventListener('click', e => {
+    if (e.target.id === 'logout') {
+      localStorage.removeItem('token');
+      location.reload();
+    }
+  });
+</script>
+
+</body>
+</html>
