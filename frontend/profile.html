@@ -134,32 +134,31 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-                // Use FormData for file upload
-                const formData = new FormData();
-                formData.append('username', username);
-                formData.append('bio', bio);
+                // NOTE: File upload requires backend 'multer' which is missing.
+                // Sending JSON data for text fields.
+                // Profile image update via UI Avatars fallback is handled by frontend display logic.
 
-                const isDefault = previewImg.src.includes('ui-avatars.com');
-
-                if (fileInput.files[0]) {
-                    formData.append('profileImage', fileInput.files[0]);
-                } else if (deleteBtn.style.display === 'none') {
-                    // If delete button is hidden, it means the user clicked 'Remove'
-                    // or it was already default. Send empty string to remove from DB.
-                    formData.append('profileImage', '');
-                }
+                const jsonData = {
+                    username: username,
+                    bio: bio
+                    // email is disabled in form
+                };
 
                 try {
                     const response = await fetch(`${window.dashboardManager.baseURL}/users/profile`, {
                         method: 'PUT',
                         headers: {
+                            'Content-Type': 'application/json',
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         },
-                        body: formData
+                        body: JSON.stringify(jsonData)
                     });
 
                     if (response.ok) {
                         const updatedUser = await response.json();
+                        // Maintain the existing profile image or fallback, since backend didn't update it
+                        updatedUser.profileImage = user.profileImage; 
+                        
                         localStorage.setItem('user', JSON.stringify(updatedUser));
                         window.authManager.showNotification('Profile updated successfully!', 'success');
 

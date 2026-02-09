@@ -98,7 +98,7 @@
 
             // Load original recipe data
             try {
-                const response = await fetch(`http://localhost:5050/api/recipes/${recipeId}`);
+                const response = await fetch(`${window.dashboardManager.baseURL}/recipes/${recipeId}`);
                 if (!response.ok) throw new Error('Recipe not found');
                 const recipe = await response.json();
 
@@ -122,7 +122,7 @@
                         instructions: formData.get('instructions')
                     };
 
-                    const updateResponse = await fetch(`http://localhost:5050/api/recipes/${recipeId}`, {
+                    const updateResponse = await fetch(`${window.dashboardManager.baseURL}/recipes/${recipeId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

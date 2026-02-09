@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Register | Asian Food Explorer</title>
+    <title>Register | Asian Food Explorer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -26,28 +26,7 @@
     </nav>
 
     <div class="auth-container">
-        <div class="auth-form glass" id="loginFormContainer">
-            <h2>Welcome Back</h2>
-            <p>Login to your account to share your recipes</p>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" name="email" id="loginEmail" required placeholder="name@example.com">
-                    <div class="error-message" id="emailError"></div>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" id="loginPassword" required placeholder="••••••••">
-                    <div class="error-message" id="passwordError"></div>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-            </form>
-            <p style="margin-top: 20px; text-align: center;">
-                Don't have an account? <a href="#" id="showRegister" style="color: var(--primary);">Sign Up</a>
-            </p>
-        </div>
-
-        <div class="auth-form glass" id="registerFormContainer" style="display: none;">
+        <div class="auth-form glass" id="registerFormContainer">
             <h2>Create Account</h2>
             <p>Join our community of Asian food lovers</p>
             <form id="registerForm">
@@ -79,7 +58,7 @@
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
             </form>
             <p style="margin-top: 20px; text-align: center;">
-                Already have an account? <a href="#" id="showLogin" style="color: var(--primary);">Login</a>
+                Already have an account? <a href="login.html" style="color: var(--primary);">Login</a>
             </p>
         </div>
     </div>
@@ -87,18 +66,6 @@
     <div id="notification"></div>
 
     <script src="js/auth.js"></script>
-    <script>
-        document.getElementById('showRegister').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('loginFormContainer').style.display = 'none';
-            document.getElementById('registerFormContainer').style.display = 'block';
-        });
-        document.getElementById('showLogin').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('registerFormContainer').style.display = 'none';
-            document.getElementById('loginFormContainer').style.display = 'block';
-        });
-    </script>
 </body>
 
 </html>

@@ -21,7 +21,7 @@
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="index.html#recipes">Recipes</a></li>
-                <li id="auth-link"><a href="auth.html" class="btn btn-primary">Login</a></li>
+                <li id="auth-link"><a href="login.html" class="btn btn-primary">Login</a></li>
             </ul>
         </div>
     </nav>
@@ -51,7 +51,7 @@
             const container = document.getElementById('recipeDetail');
 
             try {
-                const response = await fetch(`http://localhost:5050/api/recipes/${recipeId}`);
+                const response = await fetch(`http://127.0.0.1:5000/api/recipes/${recipeId}`);
                 if (!response.ok) throw new Error('Recipe not found');
 
                 const recipe = await response.json();

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Asian Food Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+</head>
+
+<body>
+    <nav class="glass">
+        <div class="logo">Asian<span>Food</span></div>
+        <div class="nav-toggle" id="navToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-menu">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#recipes">Recipes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-form glass" id="loginFormContainer">
+            <h2>Welcome Back</h2>
+            <p>Login to your account to share your recipes</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" id="loginEmail" required placeholder="name@example.com">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" id="loginPassword" required placeholder="••••••••">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <p style="margin-top: 20px; text-align: center;">
+                Don't have an account? <a href="register.html" style="color: var(--primary);">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="notification"></div>
+
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

@@ -1,15 +1,37 @@
 // Authentication Manager
 class AuthManager {
     constructor() {
-        this.baseURL = 'http://localhost:5050/api';
+        this.baseURL = 'http://127.0.0.1:5000/api';
         this.token = localStorage.getItem('token');
         this.user = JSON.parse(localStorage.getItem('user')) || null;
         this.init();
     }
 
     init() {
+        this.checkServerHealth();
         this.checkAuth();
         this.setupEventListeners();
+    }
+
+    async checkServerHealth(retries = 3) {
+        try {
+            const response = await fetch(`${this.baseURL}/health`);
+            if (!response.ok) throw new Error('Server returned ' + response.status);
+            console.log('Server is healthy');
+
+            // Remove any existing error notifications if successful
+            const existingError = document.getElementById('notification');
+            if (existingError && existingError.classList.contains('error')) {
+                existingError.classList.remove('show');
+            }
+        } catch (error) {
+            console.error(`Server health check failed (attempts left: ${retries}):`, error);
+            if (retries > 0) {
+                setTimeout(() => this.checkServerHealth(retries - 1), 2000); // Retry after 2 seconds
+            } else {
+                this.showNotification('⚠️ Backend Server is NOT reachable. Please run "npm start" in backend folder.', 'error');
+            }
+        }
     }
 
     checkAuth() {
@@ -216,7 +238,7 @@ class AuthManager {
             }
         } catch (error) {
             console.error('Login error:', error);
-            this.showNotification('Network error. Please try again.', 'error');
+            this.showNotification(`Login failed: ${error.message}`, 'error');
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }
@@ -297,7 +319,7 @@ class AuthManager {
             }
         } catch (error) {
             console.error('Registration error:', error);
-            this.showNotification('Network error. Please try again.', 'error');
+            this.showNotification(`Registration failed: ${error.message}. Checked: ${this.baseURL}/auth/register`, 'error');
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }

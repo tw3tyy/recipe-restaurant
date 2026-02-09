@@ -1,7 +1,7 @@
 // Dashboard Manager
 class DashboardManager {
     constructor() {
-        this.baseURL = 'http://localhost:5050/api';
+        this.baseURL = 'http://127.0.0.1:5000/api';
         this.token = localStorage.getItem('token');
         this.user = JSON.parse(localStorage.getItem('user')) || null;
         this.init();
@@ -131,7 +131,7 @@ class DashboardManager {
                     <div class="recipe-meta">
                         <span><i class="fas fa-clock"></i> 30min</span>
                         <span><i class="fas fa-eye"></i> ${recipe.views || 0}</span>
-                        <span><i class="fas fa-star"></i> 4.5</span>
+                        <span><i class="fas fa-star"></i> ${recipe.rating || 0}</span>
                     </div>
                     
                     <div class="recipe-actions">

@@ -5,7 +5,7 @@ class App {
     }
 
     init() {
-        this.baseURL = 'http://localhost:5050/api';
+        this.baseURL = 'http://127.0.0.1:5000/api';
         this.allRecipes = []; // Store recipes for search
         this.setupMobileMenu();
         this.loadRecipes();
@@ -45,7 +45,7 @@ class App {
                         <i class="fas fa-utensils" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
                         <h3>No recipes shared yet</h3>
                         <p>Be the first to share an authentic Asian dish!</p>
-                        <a href="auth.html" class="btn btn-primary" style="margin-top: 20px;">Get Started</a>
+                        <a href="register.html" class="btn btn-primary" style="margin-top: 20px;">Get Started</a>
                     </div>
                 `;
             }
