@@ -149,22 +149,6 @@ class AuthManager {
             logoutBtn.addEventListener('click', () => this.logout());
         }
 
-        // Mobile menu toggle
-        const navToggle = document.getElementById('navToggle');
-        const navMenu = document.querySelector('.nav-menu');
-
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
-
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                    navMenu.classList.remove('active');
-                }
-            });
-        }
     }
 
     setupEventListeners() {
