@@ -100,9 +100,9 @@ The application is deployed and available at:
 *Browse and filter authentic Asian dishes by category.*
 
 ### 🔐 Authentication (Login & Register)
-````carousel
+
 ![Login Page](screenshots/login_page.png)
-<!-- slide -->
+*Secure login flow.*
+
 ![Register Page](screenshots/register_page.png)
-````
-*Secure authentication flow with glassmorphism design.*
+*User registration with validation.*
